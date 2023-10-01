@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import APIService from '../components/APIService'; 5 horas para que esto no funcione c##r
 import axiosStudents from "../httpClient";
+import { axiosCourses } from "../httpClient";
 
 const SignUp = () => {
+    const [courses, setCourses] = useState([]);
     const [error, setError] = useState("");
     const [newStudent, setNewStudent] = useState({
         username: "",
@@ -13,6 +15,18 @@ const SignUp = () => {
         descripcion: "",
         imagen: "#",
     });
+
+    useEffect(() => {
+        // Realizar la petición para obtener la lista de cursos
+        axiosCourses
+            .get("/course")
+            .then((response) => {
+                setCourses(response.data); // Actualizar el estado con los cursos obtenidos
+            })
+            .catch((error) => {
+                console.error("Error al obtener la lista de cursos:", error);
+            });
+    }, []);
 
     const handleInputChange = (e) => {
         setNewStudent({
@@ -113,14 +127,19 @@ const SignUp = () => {
                                                     className={`form-outline mb-4 ${error && "has-error"
                                                         }`}
                                                 >
-                                                    <input
-                                                        type="text"
+                                                    <select
                                                         name="curso"
                                                         value={newStudent.curso}
                                                         onChange={handleInputChange}
                                                         className="form-control"
-                                                        placeholder="Curso"
-                                                    />
+                                                    >
+                                                        <option value="">Selecciona un curso</option>
+                                                        {courses.map((course) => (
+                                                            <option key={course.id} value={course.name}>
+                                                                {course.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>{" "}
                                                 </div>
                                                 <div
                                                     className={`form-outline mb-4 ${error && "has-error"

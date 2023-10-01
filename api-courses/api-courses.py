@@ -1,11 +1,10 @@
 from dataclasses import dataclass
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from uuid import uuid4
-import base64
 import redis
 
 app = Flask(__name__)
@@ -15,7 +14,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_USER_SIGNER"] = True
-app.config["SESSION_REDIS"] = redis.from_url("redis://127.0.0.1:6379")
+app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
 
 app.secret_key = "my_secret_key"
 
