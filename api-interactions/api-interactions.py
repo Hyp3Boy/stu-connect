@@ -18,7 +18,8 @@ app.config["SESSION_REDIS"] = redis.from_url("redis://127.0.0.1:6379")
 
 app.secret_key = "my_secret_key"
 
-
+bcrypt = Bcrypt(app)
+server_session = Session(app)
 db = SQLAlchemy(app)
 
 
@@ -27,112 +28,180 @@ def get_uuid():
 
 
 @dataclass
-class Course(db.Model):
+class Student(db.Model):
     id: str
-    name: str
-    description: str
-    instructor: str
+    email: str
+    username: str
+    password: str
+    descripcion: str
+    curso: str
+    celular: str
+    imagen: str
 
     id = db.Column(db.String(32), primary_key=True,
                    unique=True, default=get_uuid)
-    name = db.Column(db.String(345), unique=True)
-    description = db.Column(db.String(250), nullable=False)
-    instructor = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(345), unique=True)
+    username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    descripcion = db.Column(db.String(250), nullable=False)
+    curso = db.Column(db.String(100), nullable=False)
+    celular = db.Column(db.String(9), nullable=False)
+    imagen = db.Column(db.String(200), nullable=False)
 
     def __repr__(self):
-        return f"<Course Name {self.name}>"
+        return f"<Username {self.username}>"
 
-    
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
 
 with app.app_context():
     db.create_all()
 
 
+@app.route("/@me")
+def get_current_student():
+    student_id = session.get("student_id")
 
-@app.route("/course", methods=["GET"])
-def route_course():
-    return get_courses()
+    if not student_id:
+        return jsonify({"error": "Unauthorize"}), 401
+
+    student = Student.query.filter_by(id=student_id).first()
+    return jsonify({"id": student_id, "email": student.email})
+
+
+@app.route("/student", methods=["GET"])
+def route_student():
+    return get_students()
 
 
 @app.route("/register", methods=["POST"])
-def register_course():
-    course = request.get_json()
-    return post_course(course)
+def register_student():
+    student = request.get_json()
+    return post_student(student)
 
 
+@app.route("/login", methods=["POST"])
+def login_student():
+    email = request.json["email"]
+    password = request.json["password"]
+
+    student = Student.query.filter_by(email=email).first()
+
+    if student is None or not bcrypt.check_password_hash(
+        base64.b64decode(student.password), password
+    ):
+        return jsonify({"error": "Email or password is incorrect"}), 401
+
+    session["student_id"] = student.id
+
+    return jsonify(student)
 
 
-
-@app.route("/course/<id>", methods=["GET", "PUT", "DELETE"])
-def route_courses_id(id):
+@app.route("/student/<id>", methods=["GET", "PUT", "DELETE"])
+def route_students_id(id):
     if request.method == "GET":
-        return get_course_by_id(id)
+        return get_student_by_id(id)
     elif request.method == "PUT":
-        course = request.get_json()
-        return update_course(id, course)
+        student = request.get_json()
+        return update_student(id, student)
     elif request.method == "DELETE":
-        return delete_course(id)
+        return delete_student(id)
 
 
 @app.route("/logout", methods=["POST"])
-def logout_course():
-    session.pop("course_id")
+def logout_student():
+    session.pop("student_id")
     return "200"
 
 
-def get_courses():
-    courses = Course.query.all()
-    return jsonify(courses)
+def get_students():
+    students = Student.query.all()
+    return jsonify(students)
 
 
-def get_course_by_id(id):
-    course = Course.query.get_or_404(id)
-    return jsonify(course)
+def get_student_by_id(id):
+    student = Student.query.get_or_404(id)
+    return jsonify(student)
 
 
-def post_course(course):
-    email = course["email"]
-    course_exists = Course.query.filter_by(email=email).first() is not None
+def post_student(student):
+    email = student["email"]
+    student_exists = Student.query.filter_by(email=email).first() is not None
 
-    if course_exists:
-        return jsonify({"error": "Course already exists"}), 409
+    if student_exists:
+        return jsonify({"error": "Student already exists"}), 409
 
-    course_password = generate_password_hash(course["password"])
-    course_password = base64.b64encode(course_password).decode("utf-8")
+    student_password = bcrypt.generate_password_hash(student["password"])
+    student_password = base64.b64encode(student_password).decode("utf-8")
 
-    new_course = Course(
-        name=course["name"],
-        description=course["description"],
-        instructor=course["instructor"],
+    new_student = Student(
+        email=student["email"],
+        username=student["username"],
+        password=student_password,
+        descripcion=student["descripcion"],
+        curso=student["curso"],
+        celular=student["celular"],
+        imagen=student["imagen"],
     )
 
-    db.session.add(new_course)
+    db.session.add(new_student)
     db.session.commit()
-    return jsonify(new_course)
+    return jsonify(new_student)
 
 
-def update_course(id, new_course):
-    course = Course.query.get_or_404(id)
-    course.email = new_course["email"]
-    course.username = new_course["username"]
-    course.password = base64.b64encode(
-        generate_password_hash(new_course["password"])
+def update_student(id, new_student):
+    student = Student.query.get_or_404(id)
+    student.email = new_student["email"]
+    student.username = new_student["username"]
+    student.password = base64.b64encode(
+        bcrypt.generate_password_hash(new_student["password"])
     ).decode("utf-8")
-    course.descripcion = new_course["descripcion"]
-    course.curso = new_course["curso"]
-    course.celular = new_course["celular"]
-    course.imagen = new_course["imagen"]
+    student.descripcion = new_student["descripcion"]
+    student.curso = new_student["curso"]
+    student.celular = new_student["celular"]
+    student.imagen = new_student["imagen"]
     db.session.commit()
-    return jsonify(course)
+    return jsonify(student)
 
 
-def delete_course(id):
-    course = Course.query.get(id)
-    db.session.delete(course)
+def delete_student(id):
+    student = Student.query.get(id)
+    db.session.delete(student)
     db.session.commit()
     return "SUCCESS"
 
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
+
+@dataclass
+class Interaction(db.Model):
+    id: str
+    student_id: str
+    views: int
+    likes: int
+
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    student_id = db.Column(db.String(32), db.ForeignKey('student.id'), nullable=False)
+    views = db.Column(db.Integer, default=0)
+    likes = db.Column(db.Integer, default=0)
+
+    def __repr__(self):
+        return f"<Interaction for Student {self.student_id}>"
+
+@app.route("/interactions/<student_id>", methods=["GET", "POST"])
+def interactions(student_id):
+    if request.method == "GET":
+        interaction = Interaction.query.filter_by(student_id=student_id).first()
+        return jsonify(interaction)
+    elif request.method == "POST":
+        data = request.get_json()
+        interaction = Interaction.query.filter_by(student_id=student_id).first()
+        if not interaction:
+            interaction = Interaction(student_id=student_id)
+            db.session.add(interaction)
+        interaction.views += data.get("views", 0)
+        interaction.likes += data.get("likes", 0)
+        db.session.commit()
+        return jsonify(interaction)
