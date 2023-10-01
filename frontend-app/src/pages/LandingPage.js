@@ -1,5 +1,5 @@
-import React from 'react';
-import imagePage from '../assets/imagePage1.jpg';
+import React from "react";
+import imagePage from "../assets/imagePage1.jpg";
 
 const LandingPage = () => {
     return (
@@ -11,13 +11,14 @@ const LandingPage = () => {
             <div className="container text-center">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
-                        <h2 className="mt-4">Bienvenido a nuestra plataforma de intercambio de conocimientos</h2>
+                        <h2 className="mt-4">
+                            Bienvenido a nuestra plataforma de intercambio de conocimientos
+                        </h2>
                         <p className="lead">
-                            Esta plataforma se ha creado con el objetivo de facilitar el intercambio de conocimientos.
-                            Aquí, podemos compartir recursos, plantear preguntas, resolver dudas y proporcionar explicaciones
-                            claras y concisas sobre nuestros respectivos temas. La diversidad de perspectivas y enfoques nos
-                            permite abordar los problemas desde diferentes ángulos y enriquecer nuestro aprendizaje de manera
-                            significativa.
+                            Esta plataforma se ha creado con el objetivo de facilitar el
+                            intercambio de conocimientos. Aquí, podemos conocer estudiantes
+                            que busquen ayuda en ciertos temas, y también podemos ayudar a
+                            otros estudiantes que tengan dudas en temas que dominemos.
                         </p>
                     </div>
                 </div>
@@ -41,7 +42,7 @@ const LandingPage = () => {
                                 <li>Regístrate en nuestra plataforma</li>
                                 <li>Explora los temas de tu interés</li>
                                 <li>Participa en discusiones y debates</li>
-                                <li>Comparte tus conocimientos y recursos</li>
+                                <li>Busca personas para compartir conocimiento</li>
                             </ol>
                         </div>
                     </div>

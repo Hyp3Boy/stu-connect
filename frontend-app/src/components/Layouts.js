@@ -60,7 +60,7 @@ const Layouts = () => {
                     className="text-center text-white p-3"
                     style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
                 >
-                    {new Date().getFullYear()} MDBootstrap.com
+                    {new Date().getFullYear()} StuConnect
                 </div>
             </footer>
         </div>

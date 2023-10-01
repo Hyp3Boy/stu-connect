@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import SingUp from "./pages/SingUp";
 import LandingPage from "./pages/LandingPage";
+import InfoUser from "./pages/InfoUser";
 
 function App() {
   const [student, setStudent] = useState(null);
@@ -50,7 +51,7 @@ function App() {
           <Route path="/stu20/" element={<Layouts />}>
             <Route path="/stu20/LandingPage" element={<LandingPage />} />
             <Route path="/stu20/Home" element={<Home />} />
-            <Route path="/stu20/User" />
+            <Route path="/stu20/User/:id" element={<InfoUser />} />
           </Route>
         </Route>
         <Route path="/signup" element={<SingUp />}></Route>

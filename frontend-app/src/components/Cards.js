@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Card from "./Card";
 import APIService from "./APIService";
 
-
 function Cards() {
   const [students, setStudents] = useState([]);
 
@@ -22,17 +21,17 @@ function Cards() {
   }, []);
 
   return (
-    <div className="container d-flex justify-content-center align-items-center h-100" >
+    <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row justify-content-center">
         {students.map(({ id, username, curso, descripcion, imagen }) => (
           <div className="col-md-4" key={id}>
-              <Card
-                username={username}
-                curso={curso}
-                descripcion={descripcion}
-                imagen={imagen}
-                url=""
-              />
+            <Card
+              username={username}
+              curso={curso}
+              descripcion={descripcion}
+              imagen={imagen}
+              url={`/stu20/User/${id}`}
+            />
           </div>
         ))}
       </div>
