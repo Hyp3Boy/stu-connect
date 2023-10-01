@@ -58,11 +58,9 @@ Esta aplicación web se basará en una interfaz pragmática, sencilla de compren
 
 2. SQLAlchemy
 
-3. UUID
+3. Bcrypt
 
-4. TensorFlow
-
-5. OpenCV
+4. Redis
 
 ## :rocket: Despegar Web (Temporal)
 
@@ -80,26 +78,9 @@ Esta aplicación web se basará en una interfaz pragmática, sencilla de compren
     
     
 ## :wrench: Guía de prueba en ambiente local
-# Para realizar la respectiva instalación, necesitamos tener activo nuestro virtual environmen , si no tienes instalado realiza lo siguiente:
-
-1. Crea tu env con el siguiente código: py -m venv env, si posees env en tu IDE selecciona en la esquina inferior derecha en el selector de lenguaje el env.
-2. Activa la ruta de tu env en la terminal con el siguiente código: .\env\Scripts\activate
-3. Ahora procederás a actualizar tu pip a la última versión (si es necesario) con el siguiente código: python.exe -m pip install --upgrade pip
-4. Procede a instalar todas las librerías.
-5. Para correr el programa, usarás el código con flask para conectarte al servidor: flask --app proyecto.py run
-
-## :page_facing_up: Instrucciones o reglas de uso
-
-# []
 
 ## Licencia De Uso
 
-# []
-
 ## :bar_chart: Diagramas
-
-# []
-
-## :tv: Link del video
 
 # []
