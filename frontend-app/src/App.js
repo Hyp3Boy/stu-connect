@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/utils/ProtectedRoute";
 import SingUp from "./pages/SingUp";
 import LandingPage from "./pages/LandingPage";
 import InfoUser from "./pages/InfoUser";
+import axiosStudents from "./httpClient";
 
 function App() {
   const [student, setStudent] = useState(null);
@@ -17,13 +18,8 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await fetch("/@me", {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await resp.json();
-
+        const resp = await axiosStudents.get("/@me");
+        const data = resp.data;
         if (data.error) {
           setStudent(null);
         } else {

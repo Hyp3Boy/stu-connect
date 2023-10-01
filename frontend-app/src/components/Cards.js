@@ -10,7 +10,7 @@ function Cards() {
     const fetchStudents = async () => {
       try {
         const resp = await APIService.GetStudents();
-        const studentsData = await resp.json();
+        const studentsData = await resp.data;
         setStudents(studentsData);
       } catch (error) {
         console.log(error);

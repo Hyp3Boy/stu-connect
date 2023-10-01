@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axiosStudents from "../httpClient";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,24 +18,23 @@ const Login = () => {
   const logInStudent = async (e) => {
     e.preventDefault();
     try {
-      const resp = await fetch("/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axiosStudents.post("/login", {
+        email,
+        password,
       });
-      const data = await resp.json();
-      if (resp.ok) {
+
+      if (response.status === 200) {
+        // La solicitud fue exitosa
         window.location.href = "/stu20";
       } else {
-        setError(data.error);
+        // La solicitud no fue exitosa, maneja el error según tu lógica
+        console.error("Error en la solicitud:", response.data);
+        setError(response.data.error);
       }
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
     }
   };
-
   return (
     <div>
       <section

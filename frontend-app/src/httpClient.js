@@ -1,6 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-export default axios.create({
+const axiosStudents = axios.create({
+    baseURL: "http://localhost:5001",
     withCredentials: true,
-}
-);
+});
+
+export default axiosStudents;

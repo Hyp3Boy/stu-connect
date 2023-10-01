@@ -1,32 +1,19 @@
+import axiosStudents from "../httpClient";
+
 export default class APIService {
     static GetStudents() {
-        return fetch("/student", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        return axiosStudents.get("/student");
     }
 
     static GetStudentById(id) {
-        return fetch(`/student/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        return axiosStudents.get(`/student/${id}`);
     }
 
     static InsertStudent(data) {
-        return fetch("/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
+        return axiosStudents
+            .post("/register", data)
             .then((response) => {
-                if (response.ok) {
+                if (response.status === 200) {
                     console.log("Student created successfully");
                     window.location.href = "/";
                 } else {

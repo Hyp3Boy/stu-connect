@@ -16,7 +16,7 @@ function InfoUser() {
     const fetchStudent = async () => {
       try {
         const resp = await APIService.GetStudentById(id);
-        const studentData = await resp.json();
+        const studentData = await resp.data;
         setStudent(studentData);
 
         // Aquí puedes cargar las vistas y likes desde el servidor si es necesario

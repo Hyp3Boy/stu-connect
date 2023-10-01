@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request, session
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from uuid import uuid4
 import base64
 import redis
@@ -18,6 +19,11 @@ app.config["SESSION_REDIS"] = redis.from_url("redis://127.0.0.1:6379")
 
 app.secret_key = "my_secret_key"
 
+cors = CORS(
+    app,
+    resources={r"/*": {"origins": "http://localhost:3000"}},
+    supports_credentials=True,
+)
 bcrypt = Bcrypt(app)
 server_session = Session(app)
 db = SQLAlchemy(app)

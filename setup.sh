@@ -10,7 +10,7 @@ python3 -m venv "$venv_name"
 source "$venv_name/bin/activate"
 
 # Instalar paquetes con pip
-pip3 install flask flask_bcrypt flask_session flask_sqlalchemy redis
+pip3 install flask flask_bcrypt flask_session flask_sqlalchemy redis flask_cors
 
 # Mostrar mensaje de finalización
 echo "Entorno virtual '$venv_name' creado y paquetes instalados."

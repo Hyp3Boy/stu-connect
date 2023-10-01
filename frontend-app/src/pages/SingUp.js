@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 //import APIService from '../components/APIService'; 5 horas para que esto no funcione c##r
-import axios from "axios";
+import axiosStudents from "../httpClient";
 
 const SignUp = () => {
     const [error, setError] = useState("");
@@ -33,7 +33,7 @@ const SignUp = () => {
         }
 
         try {
-            await axios.post("/register", newStudent);
+            await axiosStudents.post("/register", newStudent);
             console.log("Student created successfully");
             window.location.href = "/";
         } catch (error) {
