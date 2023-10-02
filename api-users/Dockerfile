@@ -2,6 +2,7 @@ FROM python:3.8-slim
 
 WORKDIR ./api-users
 
+RUN apt-get update && apt-get install -y gcc pkg-config default-libmysqlclient-dev
 RUN pip3 install wheel
 RUN pip3 install dataclasses
 RUN pip3 install flask
