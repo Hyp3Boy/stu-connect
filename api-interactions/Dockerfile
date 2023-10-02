@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-WORKDIR ./api-users
+WORKDIR ./api-interactions
 
 RUN pip3 install dataclasses
 RUN pip3 install flask
@@ -14,4 +14,4 @@ RUN pip3 install mysqlclient
 
 COPY . .
 
-CMD ["python3", "api-users.py"]
+CMD ["python3", "api-interactions.py"]
