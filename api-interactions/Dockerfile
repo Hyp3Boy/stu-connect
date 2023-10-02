@@ -10,6 +10,7 @@ RUN pip3 install flask_sqlalchemy
 RUN pip3 install flask_cors
 RUN pip3 install uuid
 RUN pip3 install redis
+RUN pip3 install pymysql
 RUN pip3 install mysqlclient
 
 COPY . .
