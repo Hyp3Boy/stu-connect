@@ -9,7 +9,7 @@ import redis
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:utec@44.220.10.5:8001/dev"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False
@@ -40,8 +40,7 @@ class Course(db.Model):
     description: str
     instructor: str
 
-    id = db.Column(db.String(32), primary_key=True,
-                   unique=True, default=get_uuid)
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     name = db.Column(db.String(345), unique=True)
     description = db.Column(db.String(250), nullable=False)
     instructor = db.Column(db.String(100), nullable=False)

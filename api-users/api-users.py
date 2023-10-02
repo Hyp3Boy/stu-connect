@@ -10,7 +10,8 @@ import redis
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:utec@44.220.10.5:8001/dev"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False

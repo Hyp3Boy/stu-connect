@@ -1,18 +1,64 @@
 from dataclasses import dataclass
 from flask import Flask, jsonify, request
+from flask_bcrypt import Bcrypt
+from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from uuid import uuid4
+import redis
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:utec@44.220.10.5:8001/dev"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USER_SIGNER"] = True
+app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
+
+app.secret_key = "my_secret_key"
+
+cors = CORS(
+    app,
+    resources={r"/*": {"origins": "http://localhost:3000"}},
+    supports_credentials=True,
+)
+bcrypt = Bcrypt(app)
+server_session = Session(app)
 db = SQLAlchemy(app)
 
 
 def get_uuid():
     return uuid4().hex
+
+
+@dataclass
+class Student(db.Model):
+    id: str
+    email: str
+    username: str
+    password: str
+    descripcion: str
+    curso: str
+    celular: str
+    imagen: str
+
+    id = db.Column(db.String(32), primary_key=True,
+                   unique=True, default=get_uuid)
+    email = db.Column(db.String(345), unique=True)
+    username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    descripcion = db.Column(db.String(250), nullable=False)
+    curso = db.Column(db.String(100), nullable=False)
+    celular = db.Column(db.String(9), nullable=False)
+    imagen = db.Column(db.String(200), nullable=False)
+
+    def __repr__(self):
+        return f"<Username {self.username}>"
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
 
 @dataclass

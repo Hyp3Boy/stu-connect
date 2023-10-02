@@ -10,5 +10,10 @@ const axiosCourses = axios.create({
     withCredentials: true,
 });
 
+const axiosInteractions = axios.create({
+    baseURL: "http://localhost:5003",
+    withCredentials: true,
+});
+
 export default axiosStudents;
-export { axiosCourses };
+export { axiosStudents, axiosCourses, axiosInteractions };
