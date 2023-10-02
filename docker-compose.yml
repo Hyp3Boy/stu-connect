@@ -1,0 +1,19 @@
+ version: "3.3"
+
+ services:
+   api-users:
+     build: ./api-users
+     ports:
+       - 5001:5001
+   api-interactions:
+     build: ./api-interactions
+     ports:
+       - 5003:5003
+   api-courses:
+     build: ./api-courses
+     ports:
+       - 5002:5002
+   frontend-app:
+     build: ./frontend-app
+     ports:
+       - 3000:3000
