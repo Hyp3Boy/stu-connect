@@ -98,8 +98,8 @@ def interactions(student_id):
         if not interaction:
             interaction = Interaction(student_id=student_id)
             db.session.add(interaction)
-        interaction.views += data.get("views", 0)
-        interaction.likes += data.get("likes", 0)
+        interaction.views = data["views"]
+        interaction.likes = data["likes"]
         db.session.commit()
         return jsonify(interaction)
 
