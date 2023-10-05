@@ -16,13 +16,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_USER_SIGNER"] = True
-app.config["SESSION_REDIS"] = redis.from_url("redis://0.0.0.0:6379")
+app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
 
 app.secret_key = "my_secret_key"
 
 cors = CORS(
     app,
-    resources={r"/*": {"origins": "http://localhost:3000"}},
+    resources={r"/*": {"origins": "*"}},
     supports_credentials=True,
 )
 bcrypt = Bcrypt(app)
@@ -45,7 +45,8 @@ class Student(db.Model):
     celular: str
     imagen: str
 
-    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    id = db.Column(db.String(32), primary_key=True,
+                   unique=True, default=get_uuid)
     email = db.Column(db.String(345), unique=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.Text, nullable=False)
