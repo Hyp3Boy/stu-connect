@@ -21,7 +21,7 @@ app.secret_key = "my_secret_key"
 bcrypt = Bcrypt(app)
 cors = CORS(
     app,
-    resources={r"/*": {"origins": "http://localhost:3000"}},
+    resources={r"/*": {"origins": "*"}},
     supports_credentials=True,
 )
 bcrypt = Bcrypt(app)

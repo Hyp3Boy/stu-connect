@@ -16,7 +16,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_USER_SIGNER"] = True
-app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
+app.config["SESSION_REDIS"] = redis.from_url("redis://0.0.0.0:6379")
 
 app.secret_key = "my_secret_key"
 
