@@ -45,8 +45,7 @@ class Student(db.Model):
     celular: str
     imagen: str
 
-    id = db.Column(db.String(32), primary_key=True,
-                   unique=True, default=get_uuid)
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     email = db.Column(db.String(345), unique=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.Text, nullable=False)
@@ -180,4 +179,4 @@ def delete_student(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5001, host="0.0.0.0")
